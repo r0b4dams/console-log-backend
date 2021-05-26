@@ -10,4 +10,15 @@ router.get("/", async (req, res) => {
     }
 });
 
+// SIGNUP
+// Create a new user
+
+// LOGIN
+
+// LOGOUT
+
+
+
+
+
 module.exports = router;

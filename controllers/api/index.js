@@ -10,4 +10,12 @@ router.get("/", async (req, res) => {
     }
 });
 
+// get ALL walkthroughs
+
+// get walkthroughs associated to a specific user
+
+// get walkthroughs associated to a specific game
+
+// get the favorite walkthroughs of a specific user
+
 module.exports = router;
