@@ -3,10 +3,9 @@ const express = require("express");            // server functions
 const cors = require("cors")                   // lets anyone query db
 const controllers = require("./controllers");  // require controllers for routing
 
-const logger = require("morgan");              // see http reqs
-
 const PORT = process.env.PORT || 3001;
-const db = require("./models");
+
+// const db = require("./models");
 
 const app = express();
 

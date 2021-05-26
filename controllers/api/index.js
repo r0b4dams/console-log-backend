@@ -1,7 +1,13 @@
 const router = require('express').Router();
-const apiRoutes = require('./apiRoutes');
+const db = require("../../models");
 
 // localhost:3001/api/
-router.use('/api', apiRoutes);
+router.get("/", async (req, res) => {
+    try {
+        res.json("api routes linked!")
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 module.exports = router;
