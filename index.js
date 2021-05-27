@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");          // db and schema based models
 const express = require("express");            // server functions
 const cors = require("cors")                   // lets anyone query db
