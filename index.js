@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");          // db and schema based models
 const express = require("express");            // server functions
 const cors = require("cors")                   // lets anyone query db
+const logger = require("morgan");              // see http reqs
 const controllers = require("./controllers");  // require controllers for routing
+
 
 const PORT = process.env.PORT || 3001;
 
 // const db = require("./models");
 
 const app = express();
-
+app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors()); 
