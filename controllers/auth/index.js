@@ -4,10 +4,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const tokenAuth = require("../../middleware/tokenAuth");
 
-// localhost:3001/auth/
-router.get("/", tokenAuth, async (req, res) => {
+// localhost:3001/auth/users
+router.get("/users", async (req, res) => {
     try {
-        res.json("auth routes linked!")
+        const allUsers = await db.User.find({});
+        console.log(allUsers);
+        res.json(allUsers);
     } catch (err) {
         res.status(500).json(err);
     }
