@@ -22,8 +22,6 @@ app.use(cors());
 //   origin:["https://{TBD}.herokuapp.com"]
 // }));
 
-app.use(controllers); // tells express to use routing
-
 // connect to database
 mongoose.connect(
     process.env.MONGODB_URI || "mongodb://localhost/proj3db", 
@@ -33,6 +31,8 @@ mongoose.connect(
       useCreateIndex: true,
       useFindAndModify: false
     });
+
+app.use(controllers); // tells express to use routing
 
 app.listen(PORT, () => {
     console.log("listening on port " + PORT);
