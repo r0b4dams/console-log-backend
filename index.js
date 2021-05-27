@@ -4,7 +4,6 @@ const cors = require("cors")                   // lets anyone query db
 const logger = require("morgan");              // see http reqs
 const controllers = require("./controllers");  // require controllers for routing
 
-
 const PORT = process.env.PORT || 3001;
 
 // const db = require("./models");
@@ -13,7 +12,15 @@ const app = express();
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors()); 
+
+//LOCAL
+app.use(cors());
+
+//DEPLOYED
+// app.use(cors({
+//   origin:["https://{TBD}.herokuapp.com"]
+// }));
+
 app.use(controllers); // tells express to use routing
 
 // connect to database
