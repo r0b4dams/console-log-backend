@@ -105,6 +105,28 @@ router.delete("/delete/:walkthroughid", tokenAuth, async (req, res) => {
     }
 });
 
-// ADD A GAME TO FAVORITES
+// ADD A GAME TO USER FAVORITES
+// localhost:3001/api/addfavorite/:walkthroughid/:userid
+router.put("/addfavorite/:walkthroughid/:userid", tokenAuth, async (req, res) => {
+    try {
+        const addedFav = await db.User.findOneAndUpdate({ _id: req.params.userid }, { $push: { favs: req.params.walkthroughid } }, { new: true })
+        console.log(addedFav);
+        res.status(200).json(addedFav);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// REMOVE A GAME FROM USER FAVORITES
+// localhost:3001/api/addfavorite/:walkthroughid/:userid
+router.put("/removefavorite/:walkthroughid/:userid", tokenAuth, async (req, res) => {
+    try {
+        const removedFav = await db.User.findOneAndUpdate({ _id: req.params.userid }, { $pull: {favs: req.params.walkthroughid} }, { new: true })
+        console.log(removedFav);
+        res.status(200).json(removedFav);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 module.exports = router;
