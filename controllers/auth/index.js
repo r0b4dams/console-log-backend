@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const db = require("../../models");
 
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const tokenAuth = require("../../middleware/tokenAuth");
+
 // localhost:3001/auth/
 router.get("/", async (req, res) => {
     try {
@@ -26,7 +30,7 @@ res.body should mimic the following format:
 router.post("/signup", async ({body}, res) => {
     try {
         newUser = await db.User.create(body);
-        console.log(newUser);
+        res.status(200).json(newUser);
       }
       catch(err) {
         res.json(err);
