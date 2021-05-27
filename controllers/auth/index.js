@@ -1,10 +1,8 @@
 const router = require('express').Router();
 const db = require("../../models");
-
 const jwt = require("jsonwebtoken");
-const tokenAuth = require("../../middleware/tokenAuth");
 const bcrypt = require("bcrypt");
-
+const tokenAuth = require("../../middleware/tokenAuth");
 
 // localhost:3001/auth/
 router.get("/", tokenAuth, async (req, res) => {
@@ -17,10 +15,8 @@ router.get("/", tokenAuth, async (req, res) => {
 
 // SIGNUP
 // Create a new user
-// send the following format
-// need to figure out how to hash (bcrypt?)
+// follow this shape:
 /*
-res.body should mimic the following format:
 {
 	"username":"Tiki",
 	"password":"kitteh"
