@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const db = require("../../models");
 
+const tokenAuth = require("../../middleware/tokenAuth")
+
 // test linked files
 // localhost:3001/api/
-router.get("/", async (req, res) => {
+router.get("/", tokenAuth, async (req, res) => {
     try {
         res.json("api routes linked!")
     } catch (err) {
