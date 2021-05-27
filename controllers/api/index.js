@@ -11,8 +11,9 @@ router.get("/", async (req, res) => {
     }
 });
 
-// create a walkthrough; it works!
+// CREATE WALKTHROUGH:
 // follow this shape:
+// note: game ID and name will be pulled from rawg API, user ID from token?
 /*{
 	"title":"sajdf",
 	"gameID": 1,
@@ -22,6 +23,7 @@ router.get("/", async (req, res) => {
 	"rating":50,
 	"user_id": "60aee44cc39ab56bc0abee0b"
 }*/
+// NEED TO AUTH USER
 // localhost:3001/api/create
 router.post("/create", async ({body}, res) => {
     try {
@@ -32,13 +34,38 @@ router.post("/create", async ({body}, res) => {
     }
 });
 
-// updates walkthrough by id with new exercise
-// localhost:3001/api/workouts/:id
+// UPDATE WALKTHROUGH
+// follow this shape:
+/*{
+	"title":"A most excellent update!",
+	"Content":"I really hope this works!",
+	"link": "https://strategywiki.org/wiki/Main_Page"
+}*/
+// NEED TO AUTH USER
+// localhost:3001/api/update/:id
 router.put("/update/:id", async (req, res) => {
+    const filter = {_id: req.params.id};
+    const update = req.body;
+
     try {
-        console.log(req.params.id);
-        // const updatedWalkthrough = await db.Walkthrough.findOneAndUpdate({_id: req.params.id}, {$set:{read:false}}, { new: true });
-        res.status(200).json(updatedWorkout)
+        const updatedWalkthrough = await db.Walkthrough.findOneAndUpdate(filter, update, { new: true });
+        res.status(200).json(updatedWalkthrough);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// GET ALL WALKTHROUGHS
+
+// GET A WALKTHROUGH BY ID
+// localhost:3001/api/find/:id
+router.get("/find/:id", async (req, res) => {
+
+    // console.log(req.params.id);
+
+    try { 
+        const getWalkthrough = await db.Walkthrough.findById(req.params.id);
+        res.status(200).json(getWalkthrough);
     } catch (err) {
         res.status(500).json(err);
     }
