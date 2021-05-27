@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const bcrypt = require("bcrypt");
+
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -22,6 +24,12 @@ const UserSchema = new Schema({
       ref: "Walkthrough"
     }
   ]
+});
+
+// this will hash the password on creation
+UserSchema.pre('save', function() {
+  this.password = bcrypt.hashSync(this.password, 10);
+  return this.password;
 });
 
 const User = mongoose.model("User", UserSchema);
