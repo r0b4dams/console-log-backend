@@ -3,19 +3,9 @@ const db = require("../../models");
 
 const tokenAuth = require("../../middleware/tokenAuth")
 
-// test linked files
-// localhost:3001/api/
-router.get("/", tokenAuth, async (req, res) => {
-    try {
-        res.json("api routes linked!")
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
 // CREATE WALKTHROUGH:
-// follow this shape:
-// note: game ID and name will be pulled from rawg API, user ID from token?
+// note: game ID and name will be pulled from rawg API, user ID from token
+// follow this shape: (rating defaults to zero, mongoose middleware will handle timestamps)
 /*
 {
 	"title":"Rob's 2nd walkthrough",
@@ -26,9 +16,8 @@ router.get("/", tokenAuth, async (req, res) => {
 	"user_id": "60afb6e3336f6d41c43895b6"
 }
 */
-// **NEED TO AUTH USER
 // localhost:3001/api/create
-router.post("/create", async ({body}, res) => {
+router.post("/create", tokenAuth, async ({body}, res) => {
     body.rating = 0;
     try {
         const newWalkthrough = await db.Walkthrough.create(body);
@@ -39,15 +28,17 @@ router.post("/create", async ({body}, res) => {
 });
 
 // UPDATE WALKTHROUGH
+// note: this route can also be used for updating rating
 // follow this shape:
-/*{
+/*
+{
 	"title":"A most excellent update!",
 	"Content":"I really hope this works!",
 	"link": "https://strategywiki.org/wiki/Main_Page"
-}*/
-// **NEED TO AUTH USER
+}
+*/
 // localhost:3001/api/update/:id
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", tokenAuth, async (req, res) => {
     const filter = {_id: req.params.id};
     const update = req.body;
 
@@ -73,7 +64,6 @@ router.get("/findall", async (req, res) => {
 // GET A WALKTHROUGH BY ID
 // localhost:3001/api/find/:id
 router.get("/find/:walkthroughid", async (req, res) => {
-    // console.log(req.params.id);
     try { 
         const getWalkthrough = await db.Walkthrough.findById(req.params.walkthroughid);
         res.status(200).json(getWalkthrough);
@@ -82,7 +72,7 @@ router.get("/find/:walkthroughid", async (req, res) => {
     }
 });
 
-// GET ALL WALKTHROUGHS ASSOCIATED TO A USER
+// GET ALL WALKTHROUGHS ASSOCIATED WITH A USER
 // localhost:3001/api/userwalkthroughs/:userid
 router.get("/userwalkthroughs/:userid", async (req, res) => {
     try { 
@@ -93,7 +83,7 @@ router.get("/userwalkthroughs/:userid", async (req, res) => {
     }
 });
 
-// GET ALL WALKTHROUGHS ASSOCIATED TO A GAME
+// GET ALL WALKTHROUGHS ASSOCIATED WITH A GAME
 // localhost:3001/api/gamewalkthroughs/:gameid
 router.get("/gamewalkthroughs/:gameid", async (req, res) => {
     try { 
@@ -104,9 +94,9 @@ router.get("/gamewalkthroughs/:gameid", async (req, res) => {
     }
 });
 
-// GET ALL WALKTHROUGHS ASSOCIATED TO A GAME
+// DELETE WALKTHROUGH BY ID
 // localhost:3001/api/delete/:walkthroughid
-router.delete("/delete/:walkthroughid", async (req, res) => {
+router.delete("/delete/:walkthroughid", tokenAuth, async (req, res) => {
     try { 
         const deletedWalkthrough = await db.Walkthrough.findByIdAndDelete(req.params.walkthroughid);
         res.status(200).json(deletedWalkthrough);
