@@ -13,7 +13,7 @@ const tokenAuth= (req,res,next)=>{
                 console.log(err)
                 return res.status(403).json({message:"Auth failed"})
             } else {
-                console.log(data);
+                // console.log(data);
                 req.user = data;
                 return next(); // call the next function
             }
