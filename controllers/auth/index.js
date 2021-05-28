@@ -2,46 +2,22 @@ const router = require('express').Router();
 const db = require("../../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const tokenAuth = require("../../middleware/tokenAuth");
-
-// localhost:3001/auth/users
-router.get("/users", async (req, res) => {
-    try {
-        const allUsers = await db.User.find({});
-        console.log(allUsers);
-        res.json(allUsers);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
 
 // SIGNUP
-// Create a new user
-// follow this shape:
-/*
-{
-	"username":"Tiki",
-	"password":"kitteh"
-}
-*/
+// create a new user
 // localhost:3001/auth/signup
 router.post("/signup", async ({body}, res) => {
     try {
-
+        // create a new user
         newUser = await db.User.create(body);
-
-        const token = jwt.sign({
-            username: newUser.username,
-            id: newUser._id
-        },
-        process.env.JWT_SECRET,
-        {
-            expiresIn:"2h"
-        })
-        res.json({token, user:newUser })
+        
+        // login user after signup
+        // create an auth token to send to client containing username and user id, set to expire in 2 hrs
+        const token = jwt.sign( {username: newUser.username, id: newUser._id }, process.env.JWT_SECRET, { expiresIn:"2h" });
+        res.json({token, user:newUser });
       }
       catch(err) {
-        res.json(err);
+        res.status(500).json({ message: "signup failed" });
       }
   });
 
@@ -52,27 +28,19 @@ router.post("/login", async (req, res)=>{
     try {
         // find user by username
         const loginUser = await db.User.findOne({ username: req.body.username });
-        console.log(loginUser);
 
+        // if the user cannot be found, return failure message
         if (!loginUser) {
-
-            console.log('user not found')
             return res.status(403).json({ message: "auth failed" });
 
+        // if user found but pw do not match, return failure message
         } else if (!bcrypt.compareSync(req.body.password, loginUser.password)) {
+            return res.status(403).json({ message: "auth failed" });
 
-            return res.status(403).json({ message: "auth failed" })
-
-        } else {
-            const token = jwt.sign({
-                username: loginUser.username,
-                id: loginUser._id
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn:"2h"
-            })
-            res.json({token, user: loginUser })
+        // else username/pw verified
+        // create an auth token to send to client containing username and user id, set to expire in 2 hrs
+        } else {const token = jwt.sign( {username: loginUser.username, id: loginUser._id }, process.env.JWT_SECRET, { expiresIn:"2h" });
+            res.json({token, user: loginUser });
         }
     } catch (err) {
         res.status(500).json(err);
