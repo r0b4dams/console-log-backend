@@ -1,7 +1,17 @@
 const router = require('express').Router();
 const db = require("../../models");
+const tokenAuth = require("../../middleware/tokenAuth");
 
-const tokenAuth = require("../../middleware/tokenAuth")
+// GET A SINGLE USER WITH THEIR FAVORITE WALKTHROUGHS
+// localhost:3001/api/user/:userid
+router.get("/user/:userid", async (req, res) => {
+    try { 
+        const OneUserWithFavs = await db.User.findById(req.params.userid).populate("favs"); // favs references walkthrough IDs
+        res.status(200).json(OneUserWithFavs);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 // CREATE WALKTHROUGH:
 // note: game ID and name will be pulled from rawg API, user ID from token
@@ -96,7 +106,7 @@ router.get("/gamewalkthroughs/:gameid", async (req, res) => {
 
 // DELETE WALKTHROUGH BY ID
 // localhost:3001/api/delete/:walkthroughid
-router.delete("/delete/:walkthroughid", tokenAuth, async (req, res) => {
+router.delete("/deletewalkthrough/:walkthroughid", tokenAuth, async (req, res) => {
     try { 
         const deletedWalkthrough = await db.Walkthrough.findByIdAndDelete(req.params.walkthroughid);
         res.status(200).json(deletedWalkthrough);
@@ -128,5 +138,7 @@ router.put("/removefavorite/:walkthroughid/:userid", tokenAuth, async (req, res)
         res.status(500).json(err);
     }
 });
+
+
 
 module.exports = router;
