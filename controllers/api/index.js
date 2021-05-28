@@ -6,24 +6,38 @@ const tokenAuth = require("../../middleware/tokenAuth");
 // localhost:3001/api/user/:userid
 router.get("/user/:userid", async (req, res) => {
     try { 
-        const OneUserWithFavs = await db.User.findById(req.params.userid).populate("favs"); // favs references walkthrough IDs
-        res.status(200).json(OneUserWithFavs);
+        const OneUserPopFavs = await db.User.findById(req.params.userid).populate("favs"); // favs references walkthrough IDs
+        res.status(200).json(OneUserPopFavs);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// GET ALL USERS
+// localhost:3001/api/users/all
+router.get("/users/all", async (req, res) => {
+    try { 
+        const AllUsersPopFavs = await db.User.find({}).populate("favs"); // favs references walkthrough IDs
+        res.status(200).json(AllUsersPopFavs);
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 // CREATE WALKTHROUGH:
-// note: game ID and name will be pulled from rawg API, user ID from token
+// note: game_id, gameName, and gameImgLink will be pulled from rawg API, user ID from token
 // follow this shape: (rating defaults to zero, mongoose middleware will handle timestamps)
 /*
 {
-	"title":"Rob's 2nd walkthrough",
-	"game_id": 27571,
-	"gameName": "Donkey Kong Country",
-	"Content":"D.K.! Donkey Kong!",
-	"link": "https://donkeykong.fandom.com/wiki/Donkey_Kong_Country",
-	"user_id": "60afb6e3336f6d41c43895b6"
+    title:"All charms in Hollow Knight",
+    content:"List of Charms",
+    link: "https://hollowknight.fandom.com/wiki/Category:Charms",
+
+    user_id: aurora._id,
+
+    game_id: 9767,
+    gameName: "Hollow Knight",
+    gameImgLink: "https://media.rawg.io/media/games/4cf/4cfc6b7f1850590a4634b08bfab308ab.jpg",
 }
 */
 // localhost:3001/api/create
@@ -138,7 +152,5 @@ router.put("/removefavorite/:walkthroughid/:userid", tokenAuth, async (req, res)
         res.status(500).json(err);
     }
 });
-
-
 
 module.exports = router;
