@@ -84,8 +84,12 @@ const seed = async ()=>{
         gameImgLink: "https://media.rawg.io/media/games/4cf/4cfc6b7f1850590a4634b08bfab308ab.jpg"
     });
 
+    await db.User.findOneAndUpdate({ _id: robert._id }, { $push: { favs: aurora_wt_1._id } });
+    await db.User.findOneAndUpdate({ _id: sung._id }, { $push: { favs: sung_wt_3._id } });
+    await db.User.findOneAndUpdate({ _id: sung._id }, { $push: { favs: rob_wt_1._id } });
+
     console.log('seeded!');
     mongoose.disconnect();
 }
 
-seed()
+seed();
