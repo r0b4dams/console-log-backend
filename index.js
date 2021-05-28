@@ -7,8 +7,6 @@ const controllers = require("./controllers");  // require controllers for routin
 
 const PORT = process.env.PORT || 3001;
 
-// const db = require("./models");
-
 const app = express();
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
