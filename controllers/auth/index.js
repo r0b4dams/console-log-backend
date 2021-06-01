@@ -3,6 +3,8 @@ const db = require("../../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const tokenAuth = require("../../middleware/tokenAuth");
+
 // SIGNUP
 // create a new user
 // localhost:3001/auth/signup
@@ -46,5 +48,19 @@ router.post("/login", async (req, res)=>{
         res.status(500).json(err);
     }
 });
+
+router.get("/profile", tokenAuth,  async (req,res)=>{
+    console.log(req.body);
+
+    try {
+        const profileUser = await db.User.findOne({ _id: req.user.id });
+        return res.json(profileUser);
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({message:"error",err})
+    }
+});
+
 
 module.exports = router;
