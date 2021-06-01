@@ -42,14 +42,14 @@ router.post("/login", async (req, res)=>{
         // else username/pw verified
         // create an auth token to send to client containing username and user id, set to expire in 2 hrs
         } else {const token = jwt.sign( {username: loginUser.username, id: loginUser._id }, process.env.JWT_SECRET, { expiresIn:"2h" });
-            res.json({token, user: loginUser });
+            return res.json({token, user: loginUser });
         }
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.get("/profile", tokenAuth,  async (req,res)=>{
+router.get("/profile", tokenAuth, async (req,res)=>{
     console.log(req.body);
 
     try {
