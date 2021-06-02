@@ -119,7 +119,7 @@ router.get("/gamewalkthroughs/:gameid", async (req, res) => {
 });
 
 // DELETE WALKTHROUGH BY ID
-// localhost:3001/api/delete/:walkthroughid
+// localhost:3001/api/deletewalkthrough/:walkthroughid
 router.delete("/deletewalkthrough/:walkthroughid", tokenAuth, async (req, res) => {
     try { 
         const deletedWalkthrough = await db.Walkthrough.findByIdAndDelete(req.params.walkthroughid);
