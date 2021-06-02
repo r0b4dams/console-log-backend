@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");          // db and schema based models
 const express = require("express");            // server functions
-const cors = require("cors")                   // lets anyone query db
+const cors = require("cors")                   // cross-origin
 const logger = require("morgan");              // see http reqs
 const controllers = require("./controllers");  // require controllers for routing
 
@@ -22,7 +22,7 @@ app.use(cors());
 
 // connect to database
 mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/proj3db", 
+    process.env.MONGODB_URI || "mongodb://localhost/consolelogdb", 
     { 
       useNewUrlParser: true,
       useUnifiedTopology: true,
