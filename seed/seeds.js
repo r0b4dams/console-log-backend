@@ -61,7 +61,7 @@ const seed = async ()=>{
         user_id: sung._id,
         game_id: 27024,
         gameName: "Super Mario Galaxy",
-        gameImgLink: "https://media.rawg.io/media/games/0b7/0b746092287560e4ff5a6ceb5faaed8e.jpg"
+        gameImgLink: "https://media.rawg.io/media/games/608/60842173a8a397892dc995cbf3cf8609.jpg",
     });
 
     const aurora_wt_1 = await db.Walkthrough.create({
