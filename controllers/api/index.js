@@ -26,7 +26,7 @@ router.get("/users/all", async (req, res) => {
 
 // CREATE WALKTHROUGH:
 // note: game_id, gameName, and gameImgLink will be pulled from rawg API, user ID from token
-// follow this shape: (rating defaults to zero, mongoose middleware will handle timestamps)
+// follow this shape: (rating defaults to empty array, mongoose middleware will handle timestamps)
 /*
 {
     title:"All charms in Hollow Knight",
@@ -52,7 +52,6 @@ router.post("/create", tokenAuth, async ({body}, res) => {
 });
 
 // UPDATE WALKTHROUGH
-// note: this route can also be used for updating rating
 // follow this shape:
 /*
 {
@@ -148,6 +147,17 @@ router.put("/removefavorite/:walkthroughid/:userid", tokenAuth, async (req, res)
         const removedFav = await db.User.findOneAndUpdate({ _id: req.params.userid }, { $pull: {favs: req.params.walkthroughid} }, { new: true })
         console.log(removedFav);
         res.status(200).json(removedFav);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// RATE A GAME
+// localhost:3001/api/ratewalkthrough/:walkthroughid
+router.put("/ratewalkthrough/:walkthroughid/:rating", tokenAuth, async (req, res) => {
+    try {
+        const ratedWalkthrough = await db.Walkthrough.findOneAndUpdate({ _id: req.params.walkthroughid }, { $push: {ratings: req.params.rating} }, { new: true });
+        res.status(200).json(ratedWalkthrough);
     } catch (err) {
         res.status(500).json(err);
     }
