@@ -17,7 +17,7 @@ app.use(express.json());
 
 //DEPLOYED
 app.use(cors({
-  origin:["https://ras-console-log.herokuapp.com/"]
+  origin:["https://sar-console-log.herokuapp.com/"]
 }));
 
 // connect to database
