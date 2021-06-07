@@ -24,7 +24,7 @@ Search for games using voice commands!
 
 Click the image below to check out the deployed application!
 
-[![link to app](./public/assets/images/webapp-screenshot.jpg)](https://ras-console-log.herokuapp.com/)
+[![link to app](https://raw.githubusercontent.com/comatosino/console-log-frontend/develop/public/assets/images/webapp-screenshot.jpg)
 
 ## Questions
 
