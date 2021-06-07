@@ -13,12 +13,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //LOCAL
-app.use(cors());
+// app.use(cors());
 
 //DEPLOYED
-// app.use(cors({
-//   origin:["https://{TBD}.herokuapp.com"]
-// }));
+app.use(cors({
+  origin:["https://ras-console-log.herokuapp.com/"]
+}));
 
 // connect to database
 mongoose.connect(
