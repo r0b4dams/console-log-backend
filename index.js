@@ -16,9 +16,7 @@ app.use(express.json());
 // app.use(cors());
 
 //DEPLOYED
-app.use(cors({
-  origin:["https://sar-console-log.herokuapp.com/"]
-}));
+app.use(cors({origin:"https://sar-console-log.herokuapp.com/"}));
 
 // connect to database
 mongoose.connect(
